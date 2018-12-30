@@ -4,6 +4,7 @@ dotenv.config();
 
 export default {
   servers: process.env.BACKUPEWAY_SERVERS.split(','),
+  scalewayApiSecret: process.env.BACKUPEWAY_SCALEWAY_SECRET,
   retentionDays: parseInt(process.env.BACKUPEWAY_RETENTION_DAYS || 3, 10),
   intervalDays: parseInt(process.env.BACKUPEWAY_INTERVAL_DAYS || 1, 10),
   logsDays: parseInt(process.env.BACKUPEWAY_LOGS_DAYS || 7, 10),

@@ -11,7 +11,7 @@ const logsInterval = config.logsDays * MS_IN_A_DAY;
 
 const client = axios.create({
   baseURL: process.env.BAKUPPER_SCALEWAY_URL || 'https://cp-par1.scaleway.com/',
-  headers: { 'X-Auth-Token': process.env.BAKUPPER_SCALEWAY_SECRET },
+  headers: { 'X-Auth-Token': config.sscalewayApiSecret },
 });
 
 const runBackup = async (server) => {
