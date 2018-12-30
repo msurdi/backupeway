@@ -20,7 +20,6 @@ create a .env file at the root level of this project and as a minimum, set the f
 then run
 
         npm install
-        npm run build
         npm start
 
 If you use [dokku](http://dokku.viewdocs.io/dokku/) like me, you can deploy this
