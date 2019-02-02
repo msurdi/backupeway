@@ -5,7 +5,7 @@ import config from './config';
 
 const MS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
-const oldestBackup = new Date(Date.now() - config.retentionDays * MS_IN_A_DAY);
+const getOldestBackupToKeepDate = () => new Date(Date.now() - config.retentionDays * MS_IN_A_DAY);
 const backupInterval = config.retentionDays * MS_IN_A_DAY;
 const logsInterval = config.logsDays * MS_IN_A_DAY;
 
@@ -20,12 +20,13 @@ const runBackup = async (server) => {
 };
 
 const cleanupImages = async () => {
+  logs.log('Cleaning up old images');
   const response = await client.get('/images');
   const { images } = response.data;
   const outdatedImages = images
     .filter(image => !image.public)
     .filter(image => image.state === 'available')
-    .filter(image => new Date(image.creation_date) < oldestBackup);
+    .filter(image => new Date(image.creation_date) < getOldestBackupToKeepDate());
   const deletions = outdatedImages.map((image) => {
     logs.log(`Deleting image ${image.name}`);
     return client.delete(`/images/${image.id}`);
@@ -34,11 +35,12 @@ const cleanupImages = async () => {
 };
 
 const cleanupSnapshots = async () => {
+  logs.log('Cleaning up old snapshots');
   const response = await client.get('/snapshots');
   const { snapshots } = response.data;
   const outdatedSnapshots = snapshots
     .filter(snapshot => snapshot.state === 'available')
-    .filter(snapshot => new Date(snapshot.creation_date) < oldestBackup);
+    .filter(snapshot => new Date(snapshot.creation_date) < getOldestBackupToKeepDate());
   const deletions = outdatedSnapshots.map((snapshot) => {
     logs.log(`Deleting snapshot ${snapshot.name}`);
     return client.delete(`/snapshots/${snapshot.id}`);
