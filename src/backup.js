@@ -49,8 +49,10 @@ const cleanupSnapshots = async () => {
 };
 
 const backup = async () => {
-  const backups = config.servers.map(server => runBackup(server));
-  await Promise.all(backups);
+  for (const server of config.servers) {
+    // eslint-disable-next-line no-await-in-loop
+    await runBackup(server);
+  }
   await cleanupImages();
   await cleanupSnapshots();
   logs.log(`Completed at ${new Date()}`);
