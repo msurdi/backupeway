@@ -38,6 +38,9 @@
     "extends": [
       "airbnb-base"
     ],
+    "rules": {
+      "no-restricted-syntax": 0
+    },
     "parser": "babel-eslint"
   },
   "dependencies": {
